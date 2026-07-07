@@ -1,8 +1,18 @@
 import type { Brand, BrandDto } from '../types/brand';
 import { http } from './http';
 
-async function getBrands(page?: number) {
-  return http.get(`/brands?page=${page}`);
+async function getBrands(page?: number, limit?: number) {
+  const params = new URLSearchParams();
+
+  if (page !== undefined) {
+    params.append('page', page.toString());
+  }
+
+  if (limit !== undefined) {
+    params.append('limit', limit.toString());
+  }
+
+  return http.get(`/brands${params.toString() ? `?${params.toString()}` : ''}`);
 }
 
 async function getBrand(brand: Brand) {

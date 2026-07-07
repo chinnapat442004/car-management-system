@@ -38,7 +38,10 @@ export class CarsService {
   }
 
   findOne(id: number) {
-    return this.carRepository.findOne({ where: { id: id } });
+    return this.carRepository.findOne({
+      where: { id: id },
+      relations: { brand: true },
+    });
   }
 
   update(id: number, updateCarDto: UpdateCarDto) {

@@ -40,6 +40,7 @@ function DialogOverlay({
 function DialogContent({
   className,
   children,
+
   showCloseButton = true,
   ...props
 }: DialogPrimitive.Popup.Props & {
@@ -57,7 +58,7 @@ function DialogContent({
         {...props}
       >
         {children}
-        {showCloseButton && (
+        {/* {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
             render={
@@ -71,7 +72,7 @@ function DialogContent({
             <XIcon />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
-        )}
+        )} */}
       </DialogPrimitive.Popup>
     </DialogPortal>
   );

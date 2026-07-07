@@ -15,7 +15,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import type { Brand, BrandDto } from '../../types/brand';
 import { getBrand, updateBrand } from '../../api/brand';
 import { useEffect, useState } from 'react';
-import { Pencil } from 'lucide-react';
+import { Pencil, XIcon } from 'lucide-react';
 
 type Props = {
   data: Brand;
@@ -31,9 +31,10 @@ export function UpdateDialog({ data, refreshBrands }: Props) {
   const onSubmit: SubmitHandler<BrandDto> = async (data) => {
     await updateBrand(data, id);
     await refreshBrands();
-    setOpen(false);
+    handleCancel;
   };
   function handleCancel() {
+    setOpen(false);
     reset();
   }
 
@@ -58,12 +59,23 @@ export function UpdateDialog({ data, refreshBrands }: Props) {
       <DialogContent className="sm:max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader className="pb-3">
-            <DialogTitle>แก้ไขรุ่นรถ</DialogTitle>
+            <DialogTitle>แก้ไขแบรนด์ยี่ห้อรถยนต์</DialogTitle>{' '}
+            <Button
+              variant="ghost"
+              className="absolute top-2 right-2"
+              size="icon-sm"
+              onClick={handleCancel}
+            >
+              <XIcon />
+            </Button>
           </DialogHeader>
           <FieldGroup>
             <Field>
-              <Label>ชื่อรุ่นรถ</Label>
-              <Input {...register('name')} />
+              <Label>ชื่อแบรนด์ยี่ห้อรถยนต์</Label>
+              <Input
+                placeholder="กรุณากรอกชื่อแบรนด์ยี่ห้อรถยนต์"
+                {...register('name')}
+              />
             </Field>
           </FieldGroup>
           <DialogFooter>
