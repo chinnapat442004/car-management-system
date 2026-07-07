@@ -1,26 +1,51 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
+import { PaginationDto } from 'common/dto/pagination.dto';
+import { Car } from './entities/car.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CarsService {
+  constructor(
+    @InjectRepository(Car)
+    private readonly carRepository: Repository<Car>,
+  ) {}
+
   create(createCarDto: CreateCarDto) {
-    return 'This action adds a new car';
+    return this.carRepository.save(createCarDto);
   }
 
-  findAll() {
-    return `This action returns all cars`;
+  async findAll(paginationDto: PaginationDto) {
+    const { limit = 10, page = 1 } = paginationDto;
+
+    const [cars, total] = await this.carRepository.findAndCount({
+      take: limit,
+      skip: (page - 1) * limit,
+      relations: {
+        brand: true,
+      },
+    });
+
+    return {
+      data: cars,
+      total: total,
+      page: Number(page),
+      page_size: Number(limit),
+      total_page: Math.ceil(total / limit),
+    };
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} car`;
+    return this.carRepository.findOne({ where: { id: id } });
   }
 
   update(id: number, updateCarDto: UpdateCarDto) {
-    return `This action updates a #${id} car`;
+    return this.carRepository.update(id, updateCarDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} car`;
+    return this.carRepository.delete(id);
   }
 }
