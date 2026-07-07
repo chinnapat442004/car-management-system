@@ -10,3 +10,7 @@ export interface BrandResponse {
   page_size: number;
   total_page: number;
 }
+
+export interface BrandDto {
+  name: string;
+}

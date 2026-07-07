@@ -1,6 +1,6 @@
 import { Card, CardContent, CardFooter } from '../ui/card';
 
-import { ChevronLeft, ChevronRight, Pencil, Trash } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import {
   Table,
@@ -11,14 +11,17 @@ import {
   TableRow,
 } from '../ui/table';
 import type { BrandResponse } from '../../types/brand';
+import { UpdateDialog } from './UpdateDialog';
+import { DeleteDialog } from './DeleteDialog';
 
 type Props = {
   data?: BrandResponse;
   prevPage: () => void;
   nextPage: () => void;
+  refreshBrands: () => void;
 };
 
-const CardTable = ({ data, prevPage, nextPage }: Props) => {
+const CardTable = ({ data, prevPage, nextPage, refreshBrands }: Props) => {
   return (
     <Card>
       <CardContent>
@@ -37,12 +40,14 @@ const CardTable = ({ data, prevPage, nextPage }: Props) => {
 
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button variant="outline" size="icon" aria-label="Submit">
+                    {/* <Button variant="outline" size="icon">
                       <Pencil />
-                    </Button>
-                    <Button variant="outline" size="icon" aria-label="Submit">
-                      <Trash />
-                    </Button>
+                    </Button> */}
+                    <UpdateDialog data={brand} refreshBrands={refreshBrands} />
+                    <DeleteDialog
+                      data={brand}
+                      refreshBrands={refreshBrands}
+                    ></DeleteDialog>
                   </div>
                 </TableCell>
               </TableRow>
