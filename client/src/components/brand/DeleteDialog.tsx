@@ -59,7 +59,7 @@ export function DeleteDialog({ data, refreshBrands }: Props) {
             className="bg-red-400 hover:bg-red-600"
             onClick={() => deleteData(data)}
           >
-            Save
+            Confirm
           </Button>
         </DialogFooter>
       </DialogContent>

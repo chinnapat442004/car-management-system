@@ -32,11 +32,16 @@ type Props = {
 };
 
 export function CreateDialog({ refreshCars }: Props) {
-  const { register, handleSubmit, reset, control } = useForm<CarDto>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm<CarDto>({
     defaultValues: {
       licensePlate: '',
       province: '',
-
       model: '',
       color: '',
       year: null,
@@ -46,7 +51,6 @@ export function CreateDialog({ refreshCars }: Props) {
   const [open, setOpen] = useState(false);
   const [brands, setBrands] = useState<Brand[]>([]);
   const onSubmit: SubmitHandler<CarDto> = async (data) => {
-    console.log(data);
     await createCar(data);
     await refreshCars();
     handleCancel();
@@ -64,7 +68,7 @@ export function CreateDialog({ refreshCars }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button variant="outline">เพิ่ม</Button>} />
-      <DialogContent className="sm:max-w-sm">
+      <DialogContent className="sm:max-w-sm max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader className="pb-3">
             <DialogTitle>เพิ่มรถ</DialogTitle>
@@ -81,19 +85,25 @@ export function CreateDialog({ refreshCars }: Props) {
             <Field>
               <Label>ทะเบียนรถ</Label>
               <Input
-                placeholder="กรุณากรอกทะเบียนรถ"
-                {...register('licensePlate')}
+                placeholder="ทะเบียนรถ"
+                {...register('licensePlate', {
+                  required: 'กรุณากรอกทะเบียนรถ',
+                })}
               />
+              {errors.licensePlate && (
+                <p className="text-red-500">{errors.licensePlate.message}</p>
+              )}
             </Field>
             <Field>
               <Label>จังหวัด</Label>
               <Controller
+                rules={{ required: 'กรุณาเลือกจังหวัด' }}
                 name="province"
                 control={control}
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="เลือกยี่ห้อรถ" />
+                      <SelectValue placeholder="เลือกจังหวัด" />
                     </SelectTrigger>
 
                     <SelectContent>
@@ -106,10 +116,14 @@ export function CreateDialog({ refreshCars }: Props) {
                   </Select>
                 )}
               />
+              {errors.province && (
+                <p className="text-red-500">{errors.province.message}</p>
+              )}
             </Field>
             <Field>
               <Label>ยี่ห้อรถ</Label>
               <Controller
+                rules={{ required: 'กรุณาเลือกยี่ห้อรถ' }}
                 name="brand.id"
                 control={control}
                 render={({ field }) => (
@@ -131,24 +145,48 @@ export function CreateDialog({ refreshCars }: Props) {
                   </Select>
                 )}
               />
+              {errors.brand?.id && (
+                <p className="text-red-500">{errors.brand.id.message}</p>
+              )}
             </Field>
 
             <Field>
               <Label>รุ่นรถ</Label>
-              <Input placeholder="กรุณากรอกรุ่นรถ" {...register('model')} />
+              <Input
+                placeholder="รุ่นรถ"
+                {...register('model', {
+                  required: 'กรุณากรอกรุ่นรถ',
+                })}
+              />
+              {errors.model && (
+                <p className="text-red-500">{errors.model.message}</p>
+              )}
             </Field>
             <Field>
               <Label>สีรถ</Label>
-              <Input placeholder="กรุณากรอกสีรถ" {...register('color')} />
+              <Input
+                placeholder="สีรถ"
+                {...register('color', {
+                  required: 'กรุณากรอกสีรถ',
+                })}
+              />
+              {errors.color && (
+                <p className="text-red-500">{errors.color.message}</p>
+              )}
             </Field>
             <Field>
               <Label>ปี</Label>
               <Input
-                placeholder="กรุณากรอกปี"
+                type="number"
+                placeholder="กรอกปี(พ.ศ.)"
                 {...register('year', {
                   valueAsNumber: true,
+                  required: 'กรุณากรอกปี',
                 })}
               />
+              {errors.color && (
+                <p className="text-red-500">{errors.color.message}</p>
+              )}
             </Field>
             <Field>
               <Label>หมายเหตุ</Label>

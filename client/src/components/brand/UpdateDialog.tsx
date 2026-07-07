@@ -23,7 +23,12 @@ type Props = {
 };
 
 export function UpdateDialog({ data, refreshBrands }: Props) {
-  const { register, handleSubmit, reset } = useForm<BrandDto>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<BrandDto>();
 
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(0);
@@ -31,7 +36,7 @@ export function UpdateDialog({ data, refreshBrands }: Props) {
   const onSubmit: SubmitHandler<BrandDto> = async (data) => {
     await updateBrand(data, id);
     await refreshBrands();
-    handleCancel;
+    handleCancel();
   };
   function handleCancel() {
     setOpen(false);
@@ -73,9 +78,14 @@ export function UpdateDialog({ data, refreshBrands }: Props) {
             <Field>
               <Label>ชื่อแบรนด์ยี่ห้อรถยนต์</Label>
               <Input
-                placeholder="กรุณากรอกชื่อแบรนด์ยี่ห้อรถยนต์"
-                {...register('name')}
+                placeholder="ชื่อแบรนด์ยี่ห้อรถยนต์"
+                {...register('name', {
+                  required: 'กรุณากรอกชื่อแบรนด์ยี่ห้อรถยนต์',
+                })}
               />
+              {errors.name && (
+                <p className="text-red-500">{errors.name.message}</p>
+              )}
             </Field>
           </FieldGroup>
           <DialogFooter>
