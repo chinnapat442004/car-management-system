@@ -111,16 +111,5 @@ docker compose up --build -d
 ```
 
 
-### 8. (ทางเลือก) Build สำหรับ Production
-
-```bash
-cd client
-npm run build
-
-cd ../server
-npm run build
-```
-
-
 
 
