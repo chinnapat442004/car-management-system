@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { Brand } from './entities/brand.entity';
 import { PaginationDto } from 'common/dto/pagination.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
@@ -24,6 +24,7 @@ export class BrandService {
       take: limit,
       skip: (page - 1) * limit,
       order: { name: 'ASC' },
+      where: [{ name: ILike(`%${paginationDto.search}%`) }],
     });
 
     return {

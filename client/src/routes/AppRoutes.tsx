@@ -1,4 +1,4 @@
-import { CarPage } from '../pages/Car';
+import { CarPage } from '../pages/CarPage';
 import { BrandPage } from '../pages/BrandPage';
 import { createBrowserRouter } from 'react-router';
 import Layout from '../layouts/layout';

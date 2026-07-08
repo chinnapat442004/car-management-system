@@ -15,7 +15,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import type { BrandDto } from '../../types/brand';
 import { createBrand } from '../../api/brand';
 import { useState } from 'react';
-import { XIcon } from 'lucide-react';
+import { Plus, XIcon } from 'lucide-react';
 
 type Props = {
   refreshBrands: () => void;
@@ -41,7 +41,14 @@ export function CreateDialog({ refreshBrands }: Props) {
   }
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button variant="outline">เพิ่ม</Button>} />
+      <DialogTrigger
+        render={
+          <Button variant="outline">
+            <Plus className="h-4 w-4" />
+            เพิ่มรายการ
+          </Button>
+        }
+      />
       <DialogContent className="sm:max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader className="pb-3">

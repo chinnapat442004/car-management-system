@@ -25,7 +25,7 @@ import {
 import { getBrands } from '../../api/brand';
 import type { Brand } from '../../types/brand';
 import { provinces } from '../../data/provinces';
-import { XIcon } from 'lucide-react';
+import { Plus, XIcon } from 'lucide-react';
 
 type Props = {
   refreshCars: () => void;
@@ -61,13 +61,20 @@ export function CreateDialog({ refreshCars }: Props) {
   }
 
   useEffect(() => {
-    getBrands(1, 10000).then((res) => {
+    getBrands(1, 10000, '').then((res) => {
       setBrands(res.data.data);
     });
   }, []);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button variant="outline">เพิ่ม</Button>} />
+      <DialogTrigger
+        render={
+          <Button variant="outline">
+            <Plus className="h-4 w-4" />
+            เพิ่มรายการ
+          </Button>
+        }
+      />
       <DialogContent className="sm:max-w-sm max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader className="pb-3">
@@ -178,14 +185,15 @@ export function CreateDialog({ refreshCars }: Props) {
               <Label>ปี</Label>
               <Input
                 type="number"
+                min={0}
                 placeholder="กรอกปี(พ.ศ.)"
                 {...register('year', {
                   valueAsNumber: true,
                   required: 'กรุณากรอกปี',
                 })}
               />
-              {errors.color && (
-                <p className="text-red-500">{errors.color.message}</p>
+              {errors.year && (
+                <p className="text-red-500">{errors.year.message}</p>
               )}
             </Field>
             <Field>

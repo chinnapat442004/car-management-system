@@ -1,8 +1,18 @@
 import type { Car, CarDto } from '../types/car';
 import { http } from './http';
 
-async function getCars(page?: number) {
-  return http.get(`/cars?page=${page}`);
+async function getCars(page?: number, search?: string) {
+  const params = new URLSearchParams();
+
+  if (page !== undefined) {
+    params.append('page', page.toString());
+  }
+
+  if (search !== undefined) {
+    params.append('search', search.toString());
+  }
+
+  return http.get(`/cars${params.toString() ? `?${params.toString()}` : ''}`);
 }
 
 async function getCar(car: Car) {

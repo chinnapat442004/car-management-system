@@ -63,7 +63,7 @@ export function UpdateDialog({ data, refreshCars }: Props) {
   }, [reset]);
 
   useEffect(() => {
-    getBrands(1, 10000).then((res) => {
+    getBrands(1, 10000, '').then((res) => {
       setBrands(res.data.data);
     });
   }, []);

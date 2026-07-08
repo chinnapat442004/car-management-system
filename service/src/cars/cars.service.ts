@@ -4,7 +4,7 @@ import { UpdateCarDto } from './dto/update-car.dto';
 import { PaginationDto } from 'common/dto/pagination.dto';
 import { Car } from './entities/car.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class CarsService {
@@ -26,6 +26,12 @@ export class CarsService {
       relations: {
         brand: true,
       },
+      where: [
+        { licensePlate: ILike(`%${paginationDto.search}%`) },
+        { brand: { name: ILike(`%${paginationDto.search}%`) } },
+        { model: ILike(`%${paginationDto.search}%`) },
+        { color: ILike(`%${paginationDto.search}%`) },
+      ],
     });
 
     return {
