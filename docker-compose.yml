@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: car-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: car_management
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+  backend:
+    build: ./service
+    container_name: car-backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: car_management
+
+
+  frontend:
+    build: ./client
+    container_name: car-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+
+volumes:
+  postgres_data:

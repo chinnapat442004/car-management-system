@@ -29,7 +29,7 @@ export function DeleteDialog({ data, refreshBrands }: Props) {
     getBrand(data).then((res) => {
       setBrand(res.data);
     });
-  }, []);
+  }, [data]);
 
   async function deleteData(data: Brand) {
     await deleteBrand(data);
